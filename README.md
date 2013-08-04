@@ -9,6 +9,6 @@ Utility function is added to show simple application of searching substring and 
 Usage
 ========
 
-s = 'aaaabcaa'
-occurance = search('aa', s)
-#self.assertEquals(occurance, [0, 1, 2, 6])
+    s = 'aaaabcaa'
+    occurance = search('aa', s)
+    self.assertEquals(occurance, [0, 1, 2, 6])
