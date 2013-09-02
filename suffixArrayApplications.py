@@ -17,31 +17,57 @@ def longest(s):
 
 def search(P, sStr):
     '''
-    find the substring P
+    find first substring P
     '''
     sa = tks.simple_kark_sort(sStr)
     m = len(P)
     n = len(sStr)
-    left = 0
-    right = n - 1
-    while left <= right:
+    left,  right = 0, n
+    while left < right:
         mid = (left + right) >> 1
-        comp = cmp(P, sStr[sa[mid]:sa[mid] + m])
-        if comp == -1:
-            right = mid - 1
-        elif comp == 1:
-            left = mid
+        comp = cmp(sStr[sa[mid]:sa[mid] + m], P)
+        if comp >= 0:
+            right = mid
         else:
-            left = right = mid
-            break
-    if left > right:
-        return -1, -1
-    while P == sStr[sa[left - 1]:sa[left - 1] + m]:
-        left -= 1
-    while P == sStr[sa[right + 1]:sa[right + 1] + m]:
-        right += 1
+            left = mid + 1
+    if sStr[sa[left]: sa[left] + m] == P:
+        return sa[left]
+    else:
+        return -1
 
-    result = [sa[i] for i in range(left, right + 1)]
+
+def search2(P, sStr):
+    '''
+    find the substring P, all occurances
+    '''
+    sa = tks.simple_kark_sort(sStr)
+    m = len(P)
+    n = len(sStr)
+    start, end = -1, -1
+    # lower bound
+    left,  right = 0, n
+    while left < right:
+        mid = (left + right) >> 1
+        comp = cmp(sStr[sa[mid]:sa[mid] + m], P)
+        if comp >= 0:
+            right = mid
+        else:
+            left = mid + 1
+    start = left
+    if sStr[sa[left]: sa[left] + m] != P:
+        return []
+
+    # upper bound
+    left,  right = 0, n
+    while left < right:
+        mid = (left + right) >> 1
+        comp = cmp(sStr[sa[mid]:sa[mid] + m], P)
+        if comp > 0:
+            right = mid
+        else:
+            left = mid + 1
+    end = left
+    result = [sa[i] for i in range(start, end)]
     result.sort()
     return result
 
@@ -52,10 +78,24 @@ class testUtility(unittest.TestCase):
         s = 'aaaabcaa'
         self.assertEquals(longest(s), 'aaa')
 
-    def test_(self):
-        s = 'aaaabcaa'
-        occurance = search('aa', s)
-        self.assertEquals(occurance, [0, 1, 2, 6])
+    def test_search(self):
+        s = 'aaaaaaaaa'
+        occurance = search('ba', s)
+        self.assertEquals(occurance, -1)
+
+        occurance = search('acd', s)
+        self.assertEquals(occurance, -1)
+
+        occurance = search('aaaa', s)
+        self.assertEquals(occurance, 5)
+
+    def test_search2(self):
+        s = 'aaaaaaaaa'
+        occurance = search2('ba', s)
+        self.assertEquals(occurance, [])
+
+        occurance = search2('aaa', s)
+        self.assertEquals(occurance, range(len(s) - 2))
 
 
 if __name__ == '__main__':

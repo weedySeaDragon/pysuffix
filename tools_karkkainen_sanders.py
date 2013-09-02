@@ -116,6 +116,10 @@ def kark_sort(s, SA, n, K):
 
 
 def LCP(s, suffix_array):
+    '''
+    return LCP array that LCP[i] is the longest common prefix
+    between s[SA[i]] and s[SA[i+1]]
+    '''
     n = len(s)
     rank = array('i', [0] * n)
     LCP = array('i', [0] * n)
