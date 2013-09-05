@@ -22,7 +22,7 @@ def search(P, sStr):
     sa = tks.simple_kark_sort(sStr)
     m = len(P)
     n = len(sStr)
-    left,  right = 0, n
+    left,  right = 0, n  # length of sa is n+1
     while left < right:
         mid = (left + right) >> 1
         comp = cmp(sStr[sa[mid]:sa[mid] + m], P)
@@ -45,7 +45,7 @@ def search2(P, sStr):
     n = len(sStr)
     start, end = -1, -1
     # lower bound
-    left,  right = 0, n
+    left,  right = 0, n  # length of sa is n+1
     while left < right:
         mid = (left + right) >> 1
         comp = cmp(sStr[sa[mid]:sa[mid] + m], P)
@@ -58,7 +58,7 @@ def search2(P, sStr):
         return []
 
     # upper bound
-    left,  right = 0, n
+    left,  right = 0, n  # length of sa is n+1
     while left < right:
         mid = (left + right) >> 1
         comp = cmp(sStr[sa[mid]:sa[mid] + m], P)
@@ -79,7 +79,7 @@ class testUtility(unittest.TestCase):
         self.assertEquals(longest(s), 'aaa')
 
     def test_search(self):
-        s = 'aaaaaaaaa'
+        s = 'a' * 8
         occurance = search('ba', s)
         self.assertEquals(occurance, -1)
 
@@ -87,15 +87,15 @@ class testUtility(unittest.TestCase):
         self.assertEquals(occurance, -1)
 
         occurance = search('aaaa', s)
-        self.assertEquals(occurance, 5)
+        self.assertEquals(occurance, 4)
 
     def test_search2(self):
-        s = 'aaaaaaaaa'
+        s = 'a' * 8
         occurance = search2('ba', s)
         self.assertEquals(occurance, [])
 
         occurance = search2('aaa', s)
-        self.assertEquals(occurance, range(len(s) - 2))
+        self.assertEquals(occurance, range(6))
 
 
 if __name__ == '__main__':
